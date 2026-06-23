@@ -89,12 +89,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: const Color(0xFFEAF0FF),
+              color: const Color(0xFFFFF8F3),
               borderRadius: BorderRadius.circular(14),
             ),
             child: const Icon(
               Icons.storefront_outlined,
-              color: Color(0xFF2F6BFF),
+              color: Color(0xFFD4A89E),
             ),
           ),
           const SizedBox(width: 12),
@@ -114,15 +114,15 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   offer['price'] != null
                       ? 'Цена: ${offer['price']} ₽'
                       : 'Цена не указана',
-                  style: const TextStyle(color: Color(0xFF374151)),
+                  style: const TextStyle(color: Color(0xFF5C4C48)),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   offer['in_stock'] == true ? 'В наличии' : 'Нет в наличии',
                   style: TextStyle(
                     color: offer['in_stock'] == true
-                        ? const Color(0xFF059669)
-                        : const Color(0xFFDC2626),
+                        ? const Color(0xFFB5D6A8)
+                        : const Color(0xFFE5B8B8),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -142,7 +142,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               }
             },
             style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: Color(0xFFD1D5DB)),
+              side: const BorderSide(color: Color(0xFFF5E5D8)),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),
@@ -169,7 +169,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               style: const TextStyle(
                 fontSize: 21,
                 fontWeight: FontWeight.w800,
-                color: Color(0xFF111827),
+                color: Color(0xFF5C4C48),
               ),
             ),
             const SizedBox(height: 10),
@@ -224,7 +224,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF111827),
+                  backgroundColor: const Color(0xFF5C4C48),
                 ),
                 icon: const Icon(Icons.delete_outline_rounded),
                 label: const Text('Удалить товар'),

@@ -79,7 +79,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w800,
-                color: Color(0xFF111827),
+                color: Color(0xFF5C4C48),
               ),
             ),
             const SizedBox(height: 14),
@@ -104,14 +104,14 @@ class _ProductsScreenState extends State<ProductsScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8FAFC),
+        color: const Color(0xFFFFF8F3),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFFE5E7EB)),
+        border: Border.all(color: const Color(0xFFF5E5D8)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 18, color: const Color(0xFF2F6BFF)),
+          Icon(icon, size: 18, color: const Color(0xFFD4A89E)),
           const SizedBox(width: 8),
           Text(
             text,
@@ -136,12 +136,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   width: 42,
                   height: 42,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFEAF0FF),
+                    color: const Color(0xFFFFF8F3),
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: const Icon(
                     Icons.storefront_outlined,
-                    color: Color(0xFF2F6BFF),
+                    color: Color(0xFFD4A89E),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -180,7 +180,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 label: const Text('Открыть магазин'),
                 style: OutlinedButton.styleFrom(
                   minimumSize: const Size.fromHeight(52),
-                  side: const BorderSide(color: Color(0xFFD1D5DB)),
+                  side: const BorderSide(color: Color(0xFFF5E5D8)),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -201,7 +201,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
           Text(
             '$label: ',
             style: const TextStyle(
-              color: Color(0xFF6B7280),
+              color: Color(0xFFA89B95),
               fontSize: 14,
             ),
           ),

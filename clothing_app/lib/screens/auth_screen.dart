@@ -43,6 +43,9 @@ class _AuthScreenState extends State<AuthScreen> {
     if (currentUserEmail != null) {
       await prefs.setString('user_email', currentUserEmail!);
     }
+    if (currentUserRole != null) {
+      await prefs.setString('user_role', currentUserRole!);
+    }
   }
 
   Future<void> submit() async {
@@ -73,15 +76,8 @@ class _AuthScreenState extends State<AuthScreen> {
       final url = isLoginMode ? '$baseUrl/login' : '$baseUrl/register';
 
       final body = isLoginMode
-          ? {
-              'email': email,
-              'password': password,
-            }
-          : {
-              'name': name,
-              'email': email,
-              'password': password,
-            };
+          ? {'email': email, 'password': password}
+          : {'name': name, 'email': email, 'password': password};
 
       final response = await http.post(
         Uri.parse(url),
@@ -97,6 +93,7 @@ class _AuthScreenState extends State<AuthScreen> {
         currentUserId = user['user_id'];
         currentUserName = user['name'];
         currentUserEmail = user['email'];
+        currentUserRole = user['role']?.toString() ?? 'user';
 
         await saveUserToLocalStorage();
 
@@ -114,9 +111,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
-          ),
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
         );
       } else {
         final errorText = data['detail']?.toString() ?? 'Неизвестная ошибка';
@@ -133,9 +128,7 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void showMessage(String text) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(text)),
-    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
   }
 
   Widget buildFormBlock(String title, String subtitle) {
@@ -158,7 +151,7 @@ class _AuthScreenState extends State<AuthScreen> {
               subtitle,
               style: const TextStyle(
                 fontSize: 15,
-                color: Color(0xFF6B7280),
+                color: Color(0xFFA89B95),
                 height: 1.45,
               ),
             ),
@@ -215,9 +208,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           color: Colors.white,
                         ),
                       )
-                    : Text(
-                        isLoginMode ? 'Войти' : 'Зарегистрироваться',
-                      ),
+                    : Text(isLoginMode ? 'Войти' : 'Зарегистрироваться'),
               ),
             ),
             const SizedBox(height: 10),

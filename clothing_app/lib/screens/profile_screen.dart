@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../config.dart';
+import 'admin_screen.dart';
 import 'auth_screen.dart';
 import 'history_screen.dart';
 
@@ -12,11 +13,13 @@ class ProfileScreen extends StatelessWidget {
     currentUserId = null;
     currentUserName = null;
     currentUserEmail = null;
+    currentUserRole = null;
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('user_id');
     await prefs.remove('user_name');
     await prefs.remove('user_email');
+    await prefs.remove('user_role');
 
     if (!context.mounted) return;
 
@@ -42,13 +45,10 @@ class ProfileScreen extends StatelessWidget {
               width: 52,
               height: 52,
               decoration: BoxDecoration(
-                color: const Color(0xFFEAF0FF),
+                color: const Color(0xFFFFF8F3),
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: Icon(
-                icon,
-                color: const Color(0xFF2F6BFF),
-              ),
+              child: Icon(icon, color: const Color(0xFFD4A89E)),
             ),
             const SizedBox(width: 14),
             Expanded(
@@ -68,7 +68,7 @@ class ProfileScreen extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF111827),
+                      color: Color(0xFF5C4C48),
                     ),
                   ),
                 ],
@@ -87,9 +87,7 @@ class ProfileScreen extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => const HistoryScreen(),
-            ),
+            MaterialPageRoute(builder: (context) => const HistoryScreen()),
           );
         },
         child: Padding(
@@ -100,12 +98,12 @@ class ProfileScreen extends StatelessWidget {
                 width: 54,
                 height: 54,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEAF0FF),
+                  color: const Color(0xFFFFF8F3),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: const Icon(
                   Icons.history_rounded,
-                  color: Color(0xFF2F6BFF),
+                  color: Color(0xFFD4A89E),
                   size: 28,
                 ),
               ),
@@ -124,20 +122,17 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 6),
                     Text(
-                      'Посмотреть последние результаты распознавания.',
+                      'Посмотрите последние результаты распознавания.',
                       style: TextStyle(
                         fontSize: 14,
-                        color: Color(0xFF6B7280),
+                        color: Color(0xFFA89B95),
                         height: 1.4,
                       ),
                     ),
                   ],
                 ),
               ),
-              const Icon(
-                Icons.chevron_right_rounded,
-                color: Color(0xFF9CA3AF),
-              ),
+              const Icon(Icons.chevron_right_rounded, color: Color(0xFFA89B95)),
             ],
           ),
         ),
@@ -152,9 +147,7 @@ class ProfileScreen extends StatelessWidget {
     final email = currentUserEmail ?? 'Не указан';
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Профиль'),
-      ),
+      appBar: AppBar(title: const Text('Профиль')),
       body: SafeArea(
         child: Center(
           child: ConstrainedBox(
@@ -172,10 +165,7 @@ class ProfileScreen extends StatelessWidget {
                           height: 96,
                           decoration: BoxDecoration(
                             gradient: const LinearGradient(
-                              colors: [
-                                Color(0xFF2F6BFF),
-                                Color(0xFF5B8CFF),
-                              ],
+                              colors: [Color(0xFF2F6BFF), Color(0xFF5B8CFF)],
                             ),
                             borderRadius: BorderRadius.circular(32),
                           ),
@@ -234,7 +224,77 @@ class ProfileScreen extends StatelessWidget {
                   title: 'Email',
                   value: email,
                 ),
+                buildInfoTile(
+                  icon: Icons.shield_outlined,
+                  title: 'Роль',
+                  value: currentUserRole == 'admin' ? 'Админ' : 'Пользователь',
+                ),
                 const SizedBox(height: 4),
+                if (currentUserRole == 'admin') ...[
+                  Card(
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(24),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AdminScreen(),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(18),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 54,
+                              height: 54,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFFFF3E0),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: const Icon(
+                                Icons.admin_panel_settings_rounded,
+                                color: Color(0xFFFB8C00),
+                                size: 28,
+                              ),
+                            ),
+                            const SizedBox(width: 14),
+                            const Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Панель администратора',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w800,
+                                      color: Color(0xFF111827),
+                                    ),
+                                  ),
+                                  SizedBox(height: 6),
+                                  Text(
+                                    'Просмотреть всех пользователей и статистику.',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Color(0xFF6B7280),
+                                      height: 1.4,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Icon(
+                              Icons.chevron_right_rounded,
+                              color: Color(0xFF9CA3AF),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                ],
                 buildHistoryCard(context),
                 const SizedBox(height: 16),
                 Card(

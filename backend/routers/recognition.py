@@ -1,11 +1,13 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException, Form
-import requests
+import urllib.request
+import urllib.error
+import json
 import os
 import uuid
 import base64
 
 from database import get_db_connection
-from config import OPENROUTER_API_KEY, OPENROUTER_URL, UPLOAD_DIR
+from config import AITUNNEL_API_KEY, AITUNNEL_URL, UPLOAD_DIR
 
 router = APIRouter()
 
@@ -26,7 +28,6 @@ def save_uploaded_file(contents: bytes, original_filename: str) -> str:
     return file_path
 
 
-# 🔥 НОВОЕ: fallback по имени файла
 def recognize_from_filename(filename: str):
     name = filename.lower()
     print("FILENAME FALLBACK:", name)
@@ -61,56 +62,64 @@ def recognize_from_filename(filename: str):
     return None
 
 
-def recognize_with_openrouter(image_bytes: bytes) -> str:
+def recognize_with_aitunnel(image_bytes: bytes) -> str:
     base64_image = base64.b64encode(image_bytes).decode("utf-8")
-
-    response = requests.post(
-        OPENROUTER_URL,
-        headers={
-            "Authorization": f"Bearer {OPENROUTER_API_KEY}",
-            "Content-Type": "application/json",
-        },
-        json={
-            "model": "google/gemma-3-4b-it:free",
-            "messages": [
-                {
-                    "role": "user",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": (
-                                "Look at the clothing item in the image and answer very briefly in English. "
-                                "Write only: clothing type and brand if visible. "
-                                "Examples: 'black adidas hoodie', 'nike sneakers', 'blue jeans'."
-                            )
-                        },
-                        {
-                            "type": "image_url",
-                            "image_url": {
-                                "url": f"data:image/jpeg;base64,{base64_image}"
-                            }
+    
+    payload = {
+        "model": "gpt-4o",
+        "messages": [
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "Look at the clothing item in the image and answer very briefly in English. Write only: clothing type and brand if visible. Examples: 'black adidas hoodie', 'nike sneakers', 'blue jeans'."
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/jpeg;base64,{base64_image}"
                         }
-                    ]
-                }
-            ],
-            "temperature": 0.2,
-            "max_tokens": 60
-        },
-        timeout=25,
+                    }
+                ]
+            }
+        ],
+        "temperature": 0.2,
+        "max_tokens": 60
+    }
+    
+    headers = {
+        "Authorization": f"Bearer {AITUNNEL_API_KEY}",
+        "Content-Type": "application/json"
+    }
+    
+    req = urllib.request.Request(
+        AITUNNEL_URL,
+        data=json.dumps(payload).encode(),
+        headers=headers,
+        method='POST'
     )
-
-    print("OPENROUTER STATUS:", response.status_code)
-    print("OPENROUTER RAW:", response.text)
-
-    response.raise_for_status()
-
-    data = response.json()
-    content = data["choices"][0]["message"]["content"]
-
-    if not content:
-        raise Exception("OpenRouter вернул пустой ответ")
-
-    return content.lower().strip()
+    
+    try:
+        with urllib.request.urlopen(req, timeout=30) as response:
+            result = response.read().decode()
+            
+            print("AITUNNEL STATUS: 200")
+            print("AITUNNEL RAW:", result[:500])
+            
+            data = json.loads(result)
+            content = data["choices"][0]["message"]["content"]
+            
+            if not content:
+                raise Exception("AITunnel вернул пустой ответ")
+            
+            return content.lower().strip()
+    
+    except urllib.error.HTTPError as e:
+        error_msg = e.read().decode()
+        print(f"AITUNNEL STATUS: {e.code}")
+        print("AITUNNEL ERROR:", error_msg)
+        raise Exception(f"AITunnel API error: {error_msg}")
 
 
 def map_caption_to_item(caption: str):
@@ -263,9 +272,8 @@ async def recognize_item(
 
         mapped = None
 
-        # 1️⃣ пробуем AI
         try:
-            caption = recognize_with_openrouter(contents)
+            caption = recognize_with_aitunnel(contents)
             print("CAPTION:", caption)
 
             mapped = map_caption_to_item(caption)
@@ -274,13 +282,11 @@ async def recognize_item(
                 mapped["description"] = caption
 
         except Exception as e:
-            print("OPENROUTER ERROR:", str(e))
+            print("AITUNNEL ERROR:", str(e))
 
-        # 2️⃣ fallback по имени файла
         if not mapped:
             mapped = recognize_from_filename(file.filename or "")
 
-        # 3️⃣ финальный fallback
         if not mapped:
             mapped = {
                 "brand": "Adidas",

@@ -118,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(28),
-          border: Border.all(color: const Color(0xFFE5E7EB)),
+          border: Border.all(color: const Color(0xFFF5E5D8)),
         ),
         child: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -126,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Icon(
               Icons.image_outlined,
               size: 64,
-              color: Color(0xFF9CA3AF),
+              color: Color(0xFFA89B95),
             ),
             SizedBox(height: 14),
             Text(
@@ -134,15 +134,15 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF374151),
+                color: Color(0xFF5C4C48),
               ),
             ),
             SizedBox(height: 6),
             Text(
-              'Загрузи фото одежды, чтобы начать распознавание',
+              'Загрузьте фото одежды, чтобы начать распознавание',
               style: TextStyle(
                 fontSize: 14,
-                color: Color(0xFF6B7280),
+                color: Color(0xFFA89B95),
               ),
             ),
           ],
@@ -199,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
             label: Text(isRecognizing ? 'Распознаём...' : 'Распознать'),
             style: OutlinedButton.styleFrom(
               minimumSize: const Size.fromHeight(56),
-              side: const BorderSide(color: Color(0xFFD1D5DB)),
+              side: const BorderSide(color: Color(0xFFF5E5D8)),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18),
               ),
@@ -207,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
-              foregroundColor: const Color(0xFF1A1D29),
+              foregroundColor: const Color(0xFF5C4C48),
             ),
           ),
         ),

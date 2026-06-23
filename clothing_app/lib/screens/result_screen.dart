@@ -56,12 +56,12 @@ class _ResultScreenState extends State<ResultScreen> {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: const Color(0xFFEAF0FF),
+              color: const Color(0xFFFFF8F3),
               borderRadius: BorderRadius.circular(14),
             ),
             child: Icon(
               icon,
-              color: const Color(0xFF2F6BFF),
+              color: const Color(0xFFD4A89E),
             ),
           ),
           const SizedBox(width: 12),
@@ -73,7 +73,7 @@ class _ResultScreenState extends State<ResultScreen> {
                   label,
                   style: const TextStyle(
                     fontSize: 13,
-                    color: Color(0xFF6B7280),
+                    color: Color(0xFFA89B95),
                   ),
                 ),
                 const SizedBox(height: 3),
@@ -82,7 +82,7 @@ class _ResultScreenState extends State<ResultScreen> {
                   style: const TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF111827),
+                    color: Color(0xFF5C4C48),
                   ),
                 ),
               ],
@@ -287,11 +287,11 @@ class _ResultScreenState extends State<ResultScreen> {
                 label: const Text('Загрузить другое фото'),
                 style: OutlinedButton.styleFrom(
                   minimumSize: const Size.fromHeight(56),
-                  side: const BorderSide(color: Color(0xFFD1D5DB)),
+                  side: const BorderSide(color: Color(0xFFF5E5D8)),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18),
                   ),
-                  foregroundColor: const Color(0xFF1A1D29),
+                  foregroundColor: const Color(0xFF5C4C48),
                   textStyle: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,

@@ -1,5 +1,5 @@
-OPENROUTER_API_KEY = "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"
-OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
+AITUNNEL_API_KEY = "sk-aitunnel-LksZ8L7nDi71tBtDvhVT61SJKrBUNgIG"
+AITUNNEL_URL = "https://api.aitunnel.ru/v1/chat/completions"
 
 DB_HOST = "localhost"
 DB_PORT = "5432"

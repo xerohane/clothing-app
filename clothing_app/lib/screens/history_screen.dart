@@ -108,7 +108,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             ElevatedButton(
               onPressed: () => Navigator.pop(context, true),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF111827),
+                backgroundColor: const Color(0xFF5C4C48),
               ),
               child: const Text('Очистить'),
             ),
@@ -147,20 +147,20 @@ class _HistoryScreenState extends State<HistoryScreen> {
     String text;
 
     if (normalized == 'done') {
-      bgColor = const Color(0xFFECFDF3);
-      textColor = const Color(0xFF059669);
+      bgColor = const Color(0xFFE8F5F0);
+      textColor = const Color(0xFFB5D6A8);
       text = 'Успешно';
     } else if (normalized == 'processing') {
-      bgColor = const Color(0xFFFFF7ED);
-      textColor = const Color(0xFFEA580C);
+      bgColor = const Color(0xFFFFF5E6);
+      textColor = const Color(0xFFE8A85E);
       text = 'Обработка';
     } else if (normalized == 'error') {
-      bgColor = const Color(0xFFFEF2F2);
-      textColor = const Color(0xFFDC2626);
+      bgColor = const Color(0xFFFFF0F0);
+      textColor = const Color(0xFFE5B8B8);
       text = 'Ошибка';
     } else {
-      bgColor = const Color(0xFFF3F4F6);
-      textColor = const Color(0xFF6B7280);
+      bgColor = const Color(0xFFF8F7F5);
+      textColor = const Color(0xFFA89B95);
       text = 'Неизвестно';
     }
 
@@ -185,16 +185,16 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8FAFC),
+        color: const Color(0xFFFFF8F3),
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFFE5E7EB)),
+        border: Border.all(color: const Color(0xFFF5E5D8)),
       ),
       child: Text(
         text,
         style: const TextStyle(
           fontSize: 13.5,
           fontWeight: FontWeight.w600,
-          color: Color(0xFF374151),
+          color: Color(0xFF5C4C48),
         ),
       ),
     );
@@ -222,7 +222,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
     final brand = item['brand']?.toString();
     final model = item['model']?.toString();
     final category = item['category']?.toString();
-    final confidence = item['confidence_score'];
 
     final hasRecognitionData =
         brand != null && model != null && category != null;
@@ -244,12 +243,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   width: 46,
                   height: 46,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFEAF0FF),
+                    color: const Color(0xFFFFF8F3),
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: const Icon(
                     Icons.history_rounded,
-                    color: Color(0xFF2F6BFF),
+                    color: Color(0xFFD4A89E),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -258,7 +257,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Распознавание одежды',
+                        'Результат распознавания',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w800,
@@ -289,17 +288,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   buildTag('Модель: $model'),
                   buildTag('Категория: $category'),
                 ],
-              ),
-              const SizedBox(height: 14),
-              Text(
-                confidence != null
-                    ? 'Точность: ${confidence.toString()}%'
-                    : 'Точность не указана',
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF4B5563),
-                  fontWeight: FontWeight.w600,
-                ),
               ),
               if (canOpenResult) ...[
                 const SizedBox(height: 16),

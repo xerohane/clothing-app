@@ -1,15 +1,24 @@
 import psycopg2
+import os
 from config import DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD
 
-
 def get_db_connection():
+    # Если переменные есть в окружении (их передает Docker), берем их.
+    # Если нет (локальный запуск), берем дефолтные значения из config.py
+    host = os.getenv("DB_HOST", DB_HOST)
+    user = os.getenv("DB_USER", DB_USER)
+    password = os.getenv("DB_PASSWORD", DB_PASSWORD)
+    dbname = os.getenv("DB_NAME", DB_NAME)
+    port = os.getenv("DB_PORT", DB_PORT)
+
     conn = psycopg2.connect(
-        host=DB_HOST,
-        port=DB_PORT,
-        dbname=DB_NAME,
-        user=DB_USER,
-        password=DB_PASSWORD
+        host=host,
+        port=port,
+        dbname=dbname,
+        user=user,
+        password=password
     )
+    
     cur = conn.cursor()
     cur.execute(
         """

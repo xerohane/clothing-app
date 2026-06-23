@@ -3,8 +3,8 @@ AITUNNEL_URL = "https://api.aitunnel.ru/v1/chat/completions"
 
 DB_HOST = "localhost"
 DB_PORT = "5432"
-DB_NAME = "postgres"
-DB_USER = "postgres"
-DB_PASSWORD = "1"
+DB_NAME = "my_database_name"
+DB_USER = "my_user"
+DB_PASSWORD = "my_password"
 
 UPLOAD_DIR = "uploads"

@@ -57,13 +57,23 @@ class _ProductsScreenState extends State<ProductsScreen> {
     }
   }
 
-  Future<void> openUrl(String url) async {
-    final uri = Uri.parse(url);
+  // --- ЭТОТ МЕТОД ИСПРАВЛЕН ---
+  Future<void> openUrl(String? urlString) async {
+    if (urlString == null || urlString.isEmpty) {
+      throw Exception('Ссылка на товар отсутствует');
+    }
+    
+    String formattedUrl = urlString;
+    if (!formattedUrl.startsWith('http')) {
+      formattedUrl = 'https://$formattedUrl';
+    }
+
+    final uri = Uri.parse(formattedUrl);
 
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
-      throw Exception('Не удалось открыть ссылку');
+      throw Exception('Не удалось открыть ссылку: $formattedUrl');
     }
   }
 
@@ -166,13 +176,14 @@ class _ProductsScreenState extends State<ProductsScreen> {
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
+                // --- ЭТОТ ВЫЗОВ ОБНОВЛЕН ---
                 onPressed: () async {
                   try {
                     await openUrl(item['url']);
                   } catch (e) {
                     if (!mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Ошибка: $e')),
+                      SnackBar(content: Text(e.toString())),
                     );
                   }
                 },

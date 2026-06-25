@@ -1,0 +1,12 @@
+# Static Dockerfile: copy prebuilt `build/web` into nginx image
+FROM nginx:stable-alpine
+WORKDIR /usr/share/nginx/html
+
+# Remove default files
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copy prebuilt web from build context
+COPY build/web/ /usr/share/nginx/html/
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

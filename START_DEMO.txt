@@ -1,0 +1,57 @@
+INSTRUCTIONS FOR DIPLOMA DEMO (25 June)
+
+Goal: run the app using Docker on the university PC. Give this file and the project folder (on USB) to the technician.
+
+Prerequisites for the university PC (need tech support):
+- Install Docker Desktop for Windows (enable WSL2 backend) OR Docker Engine on Linux.
+- Ensure technician can run Docker commands and has admin rights to start the service.
+
+Files on USB (copy to C:\Projects\FlutProj):
+- Entire project folder `FlutProj` (this repo)
+- Prebuilt images exported (optional): `flutproj-web.tar`, `flutproj-frontend-static.tar` (if provided)
+
+Preferred quick steps for the technician (fast path):
+1. Copy the `FlutProj` folder to `C:\Projects\FlutProj`.
+2. Open PowerShell as Administrator.
+3. Load Docker images (if provided as tarballs):
+   docker load -i flutproj-web.tar
+   docker load -i flutproj-frontend-static.tar
+
+4. Start demo stack using the demo compose file:
+   cd C:\Projects\FlutProj
+   docker compose -f docker-compose.demo.yml up -d
+
+5. Verify services are up:
+   docker compose -f docker-compose.demo.yml ps
+
+6. Open browser to http://localhost:8080
+
+If images are NOT provided and building is required (slower):
+1. In PowerShell (Admin):
+   cd C:\Projects\FlutProj\clothing_app
+   # If Flutter is NOT installed on the demo PC, skip: we should provide prebuilt build/web
+
+2. Build static frontend from prebuilt web folder (recommended):
+   cd C:\Projects\FlutProj
+   docker build -f clothing_app/Dockerfile.static -t flutproj-frontend-static clothing_app
+   # build backend image:
+   cd backend
+   docker build -t flutproj-web .
+
+3. Start demo stack:
+   cd C:\Projects\FlutProj
+   docker compose -f docker-compose.demo.yml up -d
+
+Notes & troubleshooting:
+- If CORS issues occur, backend `backend/main.py` currently allows localhost only. For a demo, temporarily change to `allow_origins=["*"]` and rebuild backend image.
+- If the demo PC is in a different network, provide the host IP and open ports or use ngrok.
+- If technician cannot run docker commands, ask them to run Docker Desktop and give you remote access for a minute.
+
+Good luck with the defense!
+
+Contact: if anything breaks during the demo, tell the technician to run these commands and send the output to you:
+- docker compose -f docker-compose.demo.yml ps
+- docker compose -f docker-compose.demo.yml logs --tail 200
+- docker logs --tail 200 flutproj-frontend-static
+
+End of file
